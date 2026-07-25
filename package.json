@@ -23,7 +23,7 @@
     "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^9.0.2",
     "nodemailer": "^6.9.14",
-    "pg": "^8.11.5"
+    "@neondatabase/serverless": "^0.9.5"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.3.1",

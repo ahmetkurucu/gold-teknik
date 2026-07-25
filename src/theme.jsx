@@ -46,5 +46,5 @@ export const globalStyles = `
   .akm-spin { animation: akm-spin 0.8s linear infinite; }
   @keyframes akm-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
   @keyframes akm-pulse { 0% { opacity: 0.8; transform: scale(1); } 100% { opacity: 0; transform: scale(1.35); } }
-  @media (max-width: 860px) { .akm-desktop-nav { display: none !important; } .akm-mobile-toggle { display: flex !important; } .akm-split { grid-template-columns: 1fr !important; } }
+  @media (max-width: 860px) { .akm-desktop-nav { display: none !important; } .akm-mobile-toggle { display: flex !important; } .akm-split { grid-template-columns: 1fr !important; } .akm-hero-grid { grid-template-columns: 1fr !important; } .akm-hero-photo { order: -1; margin-bottom: 12px; } }
 `;

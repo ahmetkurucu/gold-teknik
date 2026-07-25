@@ -257,38 +257,55 @@ export default function Site() {
         <GridBG dark />
         <CornerMark label="GLD-001 / REV.3" corner="top-left" dark />
         <div style={{ position: "absolute", inset: 0 }}><CircuitTrace /></div>
-        <div style={{ maxWidth: 1200, margin: "0 auto", position: "relative", zIndex: 2 }}>
-          <div className="akm-mono" style={{ color: TOKENS.copperLight, fontSize: 12, letterSpacing: "0.18em", marginBottom: 16 }}>
-            ⚡ ENDÜSTRİYEL BAKIM &amp; ONARIM
-          </div>
-          <h1 className="akm-h1" style={{ fontSize: "clamp(32px, 5vw, 54px)", fontWeight: 700, lineHeight: 1.08, maxWidth: 760, margin: "0 0 20px" }}>
-            Tesisiniz durmasın, biz devrede kalsın.
-          </h1>
-          <p style={{ fontSize: 17, lineHeight: 1.7, color: "rgba(237,232,222,0.75)", maxWidth: 560, marginBottom: 32 }}>
-            Elektrik panolarından pompa istasyonlarına, redüktörden fabrika geneline kadar; deneyimli ekibimizle üretim hattınızın kesintisiz çalışmasını garanti altına alıyoruz.
-          </p>
+        <div style={{ maxWidth: 1200, margin: "0 auto", position: "relative", zIndex: 2, display: "grid", gridTemplateColumns: "1.1fr 0.9fr", gap: 48, alignItems: "center" }} className="akm-hero-grid">
+          <div>
+            <div className="akm-mono" style={{ color: TOKENS.copperLight, fontSize: 12, letterSpacing: "0.18em", marginBottom: 16 }}>
+              ⚡ ENDÜSTRİYEL BAKIM &amp; ONARIM
+            </div>
+            <h1 className="akm-h1" style={{ fontSize: "clamp(32px, 5vw, 54px)", fontWeight: 700, lineHeight: 1.08, margin: "0 0 20px" }}>
+              Tesisiniz durmasın, biz devrede kalsın.
+            </h1>
+            <p style={{ fontSize: 17, lineHeight: 1.7, color: "rgba(237,232,222,0.75)", maxWidth: 560, marginBottom: 32 }}>
+              Elektrik panolarından pompa istasyonlarına, redüktörden fabrika geneline kadar; deneyimli ekibimizle üretim hattınızın kesintisiz çalışmasını garanti altına alıyoruz.
+            </p>
 
-          <div style={{ display: "flex", gap: 28, flexWrap: "wrap", marginBottom: 36 }}>
-            {[["7/24", "Acil Destek"], ["Sertifikalı", "Uzman Ekip"], ["Garantili", "İşçilik"]].map(([a, b]) => (
-              <div key={a} style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <CheckCircle2 size={18} color={TOKENS.cyan} strokeWidth={1.8} />
-                <div>
-                  <div style={{ fontSize: 14, fontWeight: 600 }}>{a}</div>
-                  <div style={{ fontSize: 12, color: "rgba(237,232,222,0.55)" }}>{b}</div>
+            <div style={{ display: "flex", gap: 28, flexWrap: "wrap", marginBottom: 36 }}>
+              {[["7/24", "Acil Destek"], ["Sertifikalı", "Uzman Ekip"], ["Garantili", "İşçilik"]].map(([a, b]) => (
+                <div key={a} style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                  <CheckCircle2 size={18} color={TOKENS.cyan} strokeWidth={1.8} />
+                  <div>
+                    <div style={{ fontSize: 14, fontWeight: 600 }}>{a}</div>
+                    <div style={{ fontSize: 12, color: "rgba(237,232,222,0.55)" }}>{b}</div>
+                  </div>
                 </div>
+              ))}
+            </div>
+
+            <div style={{ display: "flex", gap: 14, flexWrap: "wrap", alignItems: "center" }}>
+              <button onClick={() => scrollToId("teklif-form")} className="akm-btn" style={{ background: TOKENS.copper, color: "#fff", border: "none", padding: "14px 26px", fontSize: 14, fontWeight: 500, display: "flex", alignItems: "center", gap: 8 }}>
+                Teklif İste <ArrowRight size={16} />
+              </button>
+              <button onClick={() => scrollToId("hizmetlerimiz")} className="akm-btn" style={{ background: "transparent", color: TOKENS.paper, border: "1px solid rgba(237,232,222,0.35)", padding: "14px 26px", fontSize: 14, fontWeight: 500, display: "flex", alignItems: "center", gap: 8 }}>
+                Hizmetlerimiz <ChevronRight size={16} />
+              </button>
+              <div className="akm-mono" style={{ display: "flex", alignItems: "center", gap: 8, marginLeft: 8, color: TOKENS.cyan, fontSize: 14 }}>
+                <Phone size={16} /> 0534 561 86 80
               </div>
-            ))}
+            </div>
           </div>
 
-          <div style={{ display: "flex", gap: 14, flexWrap: "wrap", alignItems: "center" }}>
-            <button onClick={() => scrollToId("teklif-form")} className="akm-btn" style={{ background: TOKENS.copper, color: "#fff", border: "none", padding: "14px 26px", fontSize: 14, fontWeight: 500, display: "flex", alignItems: "center", gap: 8 }}>
-              Teklif İste <ArrowRight size={16} />
-            </button>
-            <button onClick={() => scrollToId("hizmetlerimiz")} className="akm-btn" style={{ background: "transparent", color: TOKENS.paper, border: "1px solid rgba(237,232,222,0.35)", padding: "14px 26px", fontSize: 14, fontWeight: 500, display: "flex", alignItems: "center", gap: 8 }}>
-              Hizmetlerimiz <ChevronRight size={16} />
-            </button>
-            <div className="akm-mono" style={{ display: "flex", alignItems: "center", gap: 8, marginLeft: 8, color: TOKENS.cyan, fontSize: 14 }}>
-              <Phone size={16} /> 0534 561 86 80
+          <div className="akm-hero-photo" style={{ position: "relative" }}>
+            <div style={{ position: "absolute", inset: -10, border: `1px solid rgba(226,102,28,0.4)`, borderRadius: 4 }} aria-hidden="true" />
+            <img
+              src="/images/gold-teknik-panel.jpg"
+              alt="Gold Teknik teknisyeni elektrik panosunda çalışıyor"
+              style={{ width: "100%", height: "auto", display: "block", borderRadius: 4, boxShadow: "0 24px 60px rgba(0,0,0,0.35)", border: `1px solid rgba(255,255,255,0.15)` }}
+            />
+            <div
+              className="akm-mono"
+              style={{ position: "absolute", bottom: -14, left: 20, background: TOKENS.copper, color: "#fff", fontSize: 11, padding: "6px 12px", letterSpacing: "0.06em", boxShadow: "0 8px 20px rgba(0,0,0,0.25)" }}
+            >
+              SAHA EKİBİMİZ
             </div>
           </div>
         </div>
@@ -358,7 +375,7 @@ export default function Site() {
       </section>
 
       {/* PROJECTS */}
-      <section style={{ padding: "72px 24px", background: `linear-gradient(135deg, ${TOKENS.blueprint} 0%, ${TOKENS.blueprintDeep} 100%)`, color: TOKENS.paper, position: "relative", overflow: "hidden" }}>
+      <section style={{ padding: "72px 24px", background: `linear-gradient(135deg, rgba(24,104,168,0.93) 0%, rgba(15,77,130,0.96) 100%), url(/images/gold-teknik-panel.jpg)`, backgroundSize: "cover", backgroundPosition: "center 30%", color: TOKENS.paper, position: "relative", overflow: "hidden" }}>
         <GridBG dark />
         <div style={{ maxWidth: 1200, margin: "0 auto", position: "relative", zIndex: 2 }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 40, flexWrap: "wrap", gap: 12 }}>
@@ -387,7 +404,7 @@ export default function Site() {
 
       {/* WHY US + FORM */}
       <section id="teklif-form" className="akm-split" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", minHeight: 0 }}>
-        <div style={{ background: TOKENS.blueprint, color: TOKENS.paper, padding: "64px 40px", position: "relative", overflow: "hidden" }}>
+        <div style={{ background: `linear-gradient(135deg, rgba(24,104,168,0.93) 0%, rgba(15,77,130,0.96) 100%), url(/images/gold-teknik-panel.jpg)`, backgroundSize: "cover", backgroundPosition: "center 30%", color: TOKENS.paper, padding: "64px 40px", position: "relative", overflow: "hidden" }}>
           <GridBG dark />
           <div style={{ position: "relative", zIndex: 2, maxWidth: 460 }}>
             <div className="akm-mono" style={{ color: TOKENS.cyan, fontSize: 12, letterSpacing: "0.18em", marginBottom: 10 }}>NEDEN GOLD TEKNİK?</div>

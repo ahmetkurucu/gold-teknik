@@ -112,15 +112,19 @@ Postgres'te saklanır.
   ```
 - Framework olarak "Vite" otomatik algılanır; `vercel.json` zaten build ayarlarını içeriyor.
 
-### 2. Vercel Postgres'i ekleyin (ücretsiz)
+### 2. Postgres veritabanı ekleyin (ücretsiz — Neon üzerinden)
 
-Vercel proje panelinde **Storage → Create Database → Postgres** yolunu izleyin
-(Hobby planında ücretsiz bir kotayla gelir). Veritabanını oluşturup projeye
-bağladığınızda Vercel, `POSTGRES_URL` ortam değişkenini **otomatik olarak** ekler —
-başka hiçbir şey yapmanıza gerek yok. Kod, bu değişken varsa otomatik olarak
-Postgres'i kullanır; yoksa (yerelde olduğu gibi) dosyaya yazmaya devam eder.
+Vercel proje panelinde **Storage → Create Database** yolunu izleyin. Vercel artık
+Postgres'i **Neon** entegrasyonu üzerinden sunuyor — "Marketplace Database Providers"
+listesinden **Neon (Serverless Postgres)** seçin, ücretsiz plan ile oluşturup projenize
+bağlayın. Bu adımda Vercel, **`DATABASE_URL`** ortam değişkenini **otomatik olarak** ekler —
+başka hiçbir şey yapmanıza gerek yok. Kod, `DATABASE_URL` (veya eski `POSTGRES_URL`) varsa
+otomatik olarak Postgres'i kullanır; yoksa (yerelde olduğu gibi) dosyaya yazmaya devam eder.
 
 İlk istek geldiğinde `quotes` tablosu kendiliğinden oluşturulur (elle SQL çalıştırmanıza gerek yok).
+
+**Önemli:** Veritabanını bağladıktan sonra **mutlaka yeniden deploy edin** (Deployments →
+en son deployment → ⋯ → Redeploy). Ortam değişkeni ancak yeni bir deploy ile devreye girer.
 
 ### 3. Ortam değişkenlerini ayarlayın
 
@@ -132,7 +136,7 @@ Vercel proje panelinde **Settings → Environment Variables** kısmına şunlar�
 | `JWT_SECRET` | Rastgele, uzun bir metin (`openssl rand -hex 32` ile üretebilirsiniz) |
 | `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `NOTIFY_EMAIL` | (opsiyonel) e-posta bildirimleri için |
 
-`POSTGRES_URL` değişkenini siz eklemezsiniz — 2. adımda Vercel otomatik ekler.
+`DATABASE_URL` değişkenini siz eklemezsiniz — 2. adımda Neon/Vercel otomatik ekler.
 
 ### 4. Yeniden dağıtın
 

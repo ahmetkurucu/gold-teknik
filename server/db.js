@@ -1,34 +1,38 @@
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
+import pg from "pg";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DATA_FILE = path.join(__dirname, "data", "quotes.json");
 const TMP_FILE = DATA_FILE + ".tmp";
 
-const usePostgres = Boolean(process.env.POSTGRES_URL);
+// Neon (Vercel Marketplace) exposes DATABASE_URL. Vercel's native Postgres
+// storage (older integration) exposes POSTGRES_URL. Support both.
+const CONNECTION_STRING = process.env.DATABASE_URL || process.env.POSTGRES_URL || "";
+const usePostgres = Boolean(CONNECTION_STRING);
 export const storageMode = usePostgres ? "postgres" : "file";
 
-let sql = null;
+let pool = null;
 let ready = null;
 
 if (usePostgres) {
-  ready = (async () => {
-    const pg = await import("@vercel/postgres");
-    sql = pg.sql;
-    await sql`
-      CREATE TABLE IF NOT EXISTS quotes (
-        id TEXT PRIMARY KEY,
-        name TEXT NOT NULL,
-        email TEXT NOT NULL,
-        phone TEXT DEFAULT '',
-        service TEXT DEFAULT '',
-        message TEXT DEFAULT '',
-        status TEXT NOT NULL DEFAULT 'yeni',
-        created_at TIMESTAMPTZ NOT NULL DEFAULT now()
-      );
-    `;
-  })();
+  pool = new pg.Pool({
+    connectionString: CONNECTION_STRING,
+    ssl: { rejectUnauthorized: false },
+  });
+  ready = pool.query(`
+    CREATE TABLE IF NOT EXISTS quotes (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL,
+      email TEXT NOT NULL,
+      phone TEXT DEFAULT '',
+      service TEXT DEFAULT '',
+      message TEXT DEFAULT '',
+      status TEXT NOT NULL DEFAULT 'yeni',
+      created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+    );
+  `);
 }
 
 function rowToQuote(row) {
@@ -62,7 +66,7 @@ function writeFile(quotes) {
 export async function listQuotes() {
   if (usePostgres) {
     await ready;
-    const { rows } = await sql`SELECT * FROM quotes ORDER BY created_at DESC`;
+    const { rows } = await pool.query("SELECT * FROM quotes ORDER BY created_at DESC");
     return rows.map(rowToQuote);
   }
   return readFile();
@@ -71,10 +75,11 @@ export async function listQuotes() {
 export async function insertQuote(quote) {
   if (usePostgres) {
     await ready;
-    await sql`
-      INSERT INTO quotes (id, name, email, phone, service, message, status, created_at)
-      VALUES (${quote.id}, ${quote.name}, ${quote.email}, ${quote.phone}, ${quote.service}, ${quote.message}, ${quote.status}, ${quote.createdAt})
-    `;
+    await pool.query(
+      `INSERT INTO quotes (id, name, email, phone, service, message, status, created_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+      [quote.id, quote.name, quote.email, quote.phone, quote.service, quote.message, quote.status, quote.createdAt]
+    );
     return quote;
   }
   const quotes = readFile();
@@ -86,7 +91,7 @@ export async function insertQuote(quote) {
 export async function updateQuoteStatus(id, status) {
   if (usePostgres) {
     await ready;
-    const { rows } = await sql`UPDATE quotes SET status = ${status} WHERE id = ${id} RETURNING *`;
+    const { rows } = await pool.query("UPDATE quotes SET status = $1 WHERE id = $2 RETURNING *", [status, id]);
     return rows[0] ? rowToQuote(rows[0]) : null;
   }
   const quotes = readFile();
@@ -100,7 +105,7 @@ export async function updateQuoteStatus(id, status) {
 export async function deleteQuote(id) {
   if (usePostgres) {
     await ready;
-    await sql`DELETE FROM quotes WHERE id = ${id}`;
+    await pool.query("DELETE FROM quotes WHERE id = $1", [id]);
     return;
   }
   writeFile(readFile().filter((q) => q.id !== id));
